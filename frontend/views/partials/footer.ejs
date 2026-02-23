@@ -1,0 +1,94 @@
+<footer class="footer-section">
+    <div class="container">
+        <div class="row g-5">
+            <!-- Brand Column -->
+            <div class="col-lg-4 col-md-6">
+                <a href="/" class="d-flex align-items-center mb-4 text-decoration-none">
+                    <img src="/images/merakiLogo.png" alt="Meraki Logo" height="40" class="me-2">
+                    <span class="fs-4 text-white fw-bold font-display">Meraki</span>
+                </a>
+                <p class="text-white-50 mb-4">Crafting perfect moments, one cup at a time. We believe in the power of
+                    coffee to bring people together.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="col-lg-2 col-md-6">
+                <h5 class="text-white mb-4">Explore</h5>
+                <ul class="list-unstyled footer-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">Our Story</a></li>
+                    <li><a href="/menu">Menu</a></li>
+                    <li><a href="/review">Reviews</a></li>
+                    <li><a href="/auth/login" id="admin-link">Admin</a></li>
+                </ul>
+            </div>
+
+            <!-- Opening Hours -->
+            <div class="col-lg-3 col-md-6">
+                <h5 class="text-white mb-4">Opening Hours</h5>
+                <ul class="list-unstyled text-white-50">
+                    <li class="mb-2 d-flex justify-content-between">
+                        <span>Mon - Fri:</span>
+                        <span>7:00 AM - 9:00 PM</span>
+                    </li>
+                    <li class="mb-2 d-flex justify-content-between">
+                        <span>Saturday:</span>
+                        <span>8:00 AM - 10:00 PM</span>
+                    </li>
+                    <li class="mb-2 d-flex justify-content-between">
+                        <span>Sunday:</span>
+                        <span>8:00 AM - 8:00 PM</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="col-lg-3 col-md-6">
+                <h5 class="text-white mb-4">Contact Us</h5>
+                <ul class="list-unstyled text-white-50">
+                    <li class="mb-3">
+                        <i class="fas fa-map-marker-alt me-2 text-warning"></i>
+                        123 Coffee Lane, Brew City
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-phone-alt me-2 text-warning"></i>
+                        (555) 123-4567
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-envelope me-2 text-warning"></i>
+                        hello@merakicoffee.com
+                    </li>
+                </ul>
+                <a href="/contact" class="btn btn-outline-warning btn-sm rounded-pill px-4 mt-2">Get in Touch</a>
+            </div>
+        </div>
+
+        <hr class="my-5 border-secondary">
+
+        <div class="row align-items-center">
+            <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                <p class="text-white-50 mb-0">&copy; <%= new Date().getFullYear() %> Meraki Coffee House. All rights
+                        reserved.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <a href="#" class="text-white-50 text-decoration-none me-3">Privacy Policy</a>
+                <a href="#" class="text-white-50 text-decoration-none">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/api.js"
+    data-api-url="<%= typeof API_URL !== 'undefined' ? API_URL : 'http://localhost:5005/api' %>"></script>
+<script src="/js/main.js"></script>
+<script src="/js/forms.js"></script>
+</body>
+
+</html>

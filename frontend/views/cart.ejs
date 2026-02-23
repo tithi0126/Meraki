@@ -1,0 +1,185 @@
+<%- include('partials/header') %>
+    <%- include('partials/navbar') %>
+
+        <section class="section-fade-in py-5" style="min-height: 80vh;">
+            <div class="container">
+                <div class="d-flex align-items-center mb-5" data-reveal>
+                    <h1 class="font-display fw-bold mb-0 me-3">Your Selection</h1>
+                    <span class="badge bg-primary rounded-pill px-3 py-2 text-white shadow-sm">
+                        <%= cart ? cart.reduce((sum, item)=> sum + item.quantity, 0) : 0 %> Items
+                    </span>
+                </div>
+
+                <% if (cart && cart.length> 0) { %>
+                    <div class="row g-5">
+                        <!-- Cart Items List -->
+                        <div class="col-lg-8">
+                            <div class="d-flex flex-column gap-4">
+                                <% cart.forEach((item, index)=> { %>
+                                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden position-relative cart-item-card"
+                                        id="cart-row-<%= item.id %>" data-reveal
+                                        style="transition-delay: <%= index * 0.1 %>s;">
+                                        <div class="card-body p-4">
+                                            <div class="row align-items-center">
+                                                <!-- Image -->
+                                                <div class="col-md-2 mb-3 mb-md-0">
+                                                    <div
+                                                        class="position-relative rounded-3 overflow-hidden shadow-sm ratio ratio-1x1">
+                                                        <% if (item.image_url) { %>
+                                                            <img src="<%= item.image_url %>" class="object-fit-cover"
+                                                                alt="<%= item.name %>">
+                                                            <% } else { %>
+                                                                <div
+                                                                    class="bg-light d-flex align-items-center justify-content-center text-muted h-100">
+                                                                    <i class="fas fa-coffee"></i>
+                                                                </div>
+                                                                <% } %>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Content -->
+                                                <div class="col-md-5 mb-3 mb-md-0">
+                                                    <h5 class="font-display fw-bold mb-1">
+                                                        <%= item.name %>
+                                                    </h5>
+                                                    <p class="text-muted small mb-0 text-uppercase"
+                                                        style="letter-spacing: 1px;">
+                                                        <%= item.category %>
+                                                    </p>
+                                                    <div class="d-md-none mt-2">
+                                                        <span class="fw-bold text-primary">₹<%= item.price %></span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Controls -->
+                                                <div class="col-md-3 mb-3 mb-md-0">
+                                                    <div class="d-flex align-items-center bg-light rounded-pill p-1 border"
+                                                        style="width: fit-content;">
+                                                        <button
+                                                            class="btn btn-link text-secondary p-0 px-2 text-decoration-none qty-decrease">
+                                                            <i class="fas fa-minus" style="font-size: 0.7rem;"></i>
+                                                        </button>
+
+                                                        <input type="number"
+                                                            class="form-control form-control-sm border-0 bg-transparent text-center fw-bold update-cart p-0"
+                                                            value="<%= item.quantity %>" min="1" max="10"
+                                                            data-id="<%= item.id %>" data-price="<%= item.price %>"
+                                                            style="width: 40px; box-shadow: none;">
+
+                                                        <button
+                                                            class="btn btn-link text-secondary p-0 px-2 text-decoration-none qty-increase">
+                                                            <i class="fas fa-plus" style="font-size: 0.7rem;"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Price & Remove -->
+                                                <div
+                                                    class="col-md-2 text-md-end d-flex flex-md-column justify-content-between align-items-md-end align-items-center">
+                                                    <div class="d-none d-md-block mb-2">
+                                                        <span
+                                                            class="h5 mb-0 fw-bold text-primary item-subtotal-display">₹
+                                                            <%= (item.price * item.quantity).toFixed(2) %></span>
+                                                    </div>
+                                                    <button
+                                                        class="btn btn-link text-danger p-0 text-decoration-none remove-from-cart small opacity-75 hover-opacity-100"
+                                                        data-id="<%= item.id %>">
+                                                        <i class="fas fa-trash-alt me-1"></i> Remove
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                            </div>
+                        </div>
+
+                        <!-- Order Summary -->
+                        <div class="col-lg-4">
+                            <div class="card border-0 shadow rounded-4 p-4 position-sticky" style="top: 100px;"
+                                data-reveal>
+                                <h4 class="font-display fw-bold mb-4">Order Summary</h4>
+
+                                <div class="d-flex justify-content-between mb-2 text-muted">
+                                    <span>Subtotal</span>
+                                    <span id="summary-subtotal">₹<%= total.toFixed(2) %></span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-4 text-muted">
+                                    <span>Taxes (Included)</span>
+                                    <span>₹0.00</span>
+                                </div>
+
+                                <hr class="opacity-10 mb-4">
+
+                                <div class="d-flex justify-content-between mb-4 align-items-center">
+                                    <span class="h5 mb-0 font-display">Total</span>
+                                    <span class="h3 mb-0 fw-bold text-primary" id="cart-total">₹<%= total.toFixed(2) %>
+                                            </span>
+                                </div>
+
+                                <% if (user) { %>
+                                    <a href="/place-order"
+                                        class="btn btn-primary w-100 rounded-pill py-3 fw-bold shadow-sm mb-3">
+                                        Proceed to Checkout <i class="fas fa-arrow-right ms-2"></i>
+                                    </a>
+                                    <% } else { %>
+                                        <a href="/login?redirect=/cart"
+                                            class="btn btn-primary w-100 rounded-pill py-3 fw-bold shadow-sm mb-3">
+                                            Login to Checkout
+                                        </a>
+                                        <% } %>
+
+                                            <a href="/menu"
+                                                class="btn btn-outline-secondary w-100 rounded-pill py-2 border-0">
+                                                Continue Shopping
+                                            </a>
+
+                                            <div class="mt-4 text-center">
+                                                <p class="text-muted small mb-0"><i class="fas fa-shield-alt me-1"></i>
+                                                    Secure Checkout</p>
+                                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% } else { %>
+                        <div class="text-center py-5" data-reveal>
+                            <div class="mb-4 position-relative d-inline-block">
+                                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center p-5"
+                                    style="width: 200px; height: 200px; margin: 0 auto;">
+                                    <i class="fas fa-shopping-basket"
+                                        style="font-size: 5rem; color: var(--primary-light); opacity: 0.5;"></i>
+                                </div>
+                                <span class="position-absolute top-0 end-0 badge bg-warning rounded-circle p-3"
+                                    style="transform: translate(-20%, 20%);">
+                                    <i class="fas fa-question fa-2x text-white"></i>
+                                </span>
+                            </div>
+                            <h2 class="font-display fw-bold mb-3">Your cart is empty</h2>
+                            <p class="text-muted lead mb-5" style="max-width: 500px; margin: 0 auto;">Looks like you
+                                haven't made your choice yet. Explore our curated menu for some delicious options.</p>
+                            <a href="/menu" class="btn btn-primary btn-lg rounded-pill px-5 py-3 shadow-sm">
+                                Browse Menu
+                            </a>
+                        </div>
+                        <% } %>
+            </div>
+        </section>
+
+        <style>
+            /* Hide modern input number arrows */
+            input[type=number]::-webkit-inner-spin-button,
+            input[type=number]::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            input[type=number] {
+                -moz-appearance: textfield;
+            }
+
+            .hover-opacity-100:hover {
+                opacity: 1 !important;
+            }
+        </style>
+
+        <%- include('partials/footer') %>

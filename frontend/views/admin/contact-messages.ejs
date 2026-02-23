@@ -1,0 +1,364 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container my-5">
+    <h1 class="mb-4"><i class="fas fa-envelope"></i> Contact Messages</h1>
+
+    <% if (messages && messages.length > 0) { %>
+        <div class="row">
+            <% messages.forEach(message => { %>
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm" data-message-id="<%= message.id %>">
+                        <div class="card-header bg-primary text-white">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-0"><%= message.name %></h6>
+                                    <small><%= message.email %></small>
+                                </div>
+                                <div class="text-end">
+                                    <small class="d-block">
+                                        <%= new Date(message.created_at).toLocaleDateString() %>
+                                    </small>
+                                    <small>
+                                        <%= new Date(message.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) %>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="card-title text-primary mb-3"><%= message.subject %></h6>
+                            <p class="card-text" style="white-space: pre-line;"><%= message.message %></p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-danger btn-sm" onclick="deleteMessage('<%= message.id %>')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                            <button class="btn btn-primary btn-sm" onclick="openReplyModal('<%= message.id %>', '<%= message.name %>', '<%= message.email %>', '<%= message.subject %>')">
+                                <i class="fas fa-reply"></i> Reply
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <div class="alert alert-info text-center">
+            <i class="fas fa-info-circle"></i> No contact messages found
+        </div>
+    <% } %>
+</div>
+
+<!-- Reply Modal -->
+<div class="modal fade" id="replyModal" tabindex="-1" aria-labelledby="replyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="replyModalLabel">Reply to Message</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="originalMessage" class="mb-3 p-3 bg-light rounded">
+                    <h6>Original Message:</h6>
+                    <div id="originalContent"></div>
+                </div>
+                <form id="replyForm">
+                    <div class="mb-3">
+                        <label for="replyTo" class="form-label">To:</label>
+                        <input type="email" class="form-control" id="replyTo" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="replySubject" class="form-label">Subject:</label>
+                        <input type="text" class="form-control" id="replySubject" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="replyMessage" class="form-label">Message:</label>
+                        <textarea class="form-control" id="replyMessage" rows="8" required placeholder="Type your reply here..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="sendReplyBtn" onclick="sendReply()">
+                    <i class="fas fa-paper-plane"></i> Send Reply
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Global variable to store current message ID for reply
+let currentMessageId = null;
+
+function openReplyModal(messageId, name, email, subject) {
+    currentMessageId = messageId;
+
+    // Set modal values
+    document.getElementById('replyTo').value = email;
+    document.getElementById('replySubject').value = `Re: ${subject}`;
+
+    // Get original message content
+    const messageCard = document.querySelector(`[data-message-id="${messageId}"]`);
+    const originalContent = messageCard.querySelector('.card-text').textContent;
+    const originalSubject = messageCard.querySelector('.card-title').textContent;
+
+    document.getElementById('originalContent').innerHTML = `
+        <strong>From:</strong> ${name} &lt;${email}&gt;<br>
+        <strong>Subject:</strong> ${subject}<br><br>
+        <div class="border-start border-4 border-primary ps-3" style="background: #f8f9fa; padding: 10px; border-radius: 4px;">
+            ${originalContent.replace(/\n/g, '<br>')}
+        </div>
+    `;
+
+    // Set default reply message with professional format
+    const replyMessage = `Dear ${name},
+
+Thank you for contacting Meraki Coffee House. 
+
+[Your reply message here]
+
+Best regards,
+Meraki Coffee House Team
+
+---
+Original Message:
+From: ${name} <${email}>
+Subject: ${subject}
+Date: ${new Date().toLocaleDateString()}
+
+${originalContent}`;
+
+    document.getElementById('replyMessage').value = replyMessage;
+
+    // Show modal
+    const modal = new bootstrap.Modal(document.getElementById('replyModal'));
+    modal.show();
+}
+
+async function sendReply() {
+    const replyTo = document.getElementById('replyTo').value;
+    const replySubject = document.getElementById('replySubject').value;
+    const replyMessage = document.getElementById('replyMessage').value;
+
+    if (!replySubject.trim() || !replyMessage.trim()) {
+        showNotification('Please fill in both subject and message', 'warning');
+        return;
+    }
+
+    const sendBtn = document.getElementById('sendReplyBtn');
+    const originalText = sendBtn.innerHTML;
+    sendBtn.disabled = true;
+    sendBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
+
+    try {
+        const response = await api.replyToContactMessage(currentMessageId, {
+            to: replyTo,
+            subject: replySubject,
+            message: replyMessage
+        });
+
+        if (response.success) {
+            showNotification('Reply prepared successfully!', 'success');
+
+            // If mailto URL is provided, open email client
+            if (response.mailtoUrl) {
+                window.location.href = response.mailtoUrl;
+            }
+
+            // Close modal after a short delay
+            setTimeout(() => {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('replyModal'));
+                modal.hide();
+                document.getElementById('replyForm').reset();
+            }, 1000);
+        } else {
+            showNotification(response.message || 'Failed to prepare reply', 'danger');
+        }
+    } catch (error) {
+        console.error('Error sending reply:', error);
+        showNotification('An error occurred while sending the reply', 'danger');
+    } finally {
+        sendBtn.disabled = false;
+        sendBtn.innerHTML = originalText;
+    }
+}
+
+async function deleteMessage(messageId) {
+    if (!confirm('Are you sure you want to delete this message?')) {
+        return;
+    }
+
+    try {
+        const result = await api.deleteContactMessage(messageId);
+
+        if (result.success) {
+            // Remove the message card from the page
+            const messageCard = document.querySelector(`[data-message-id="${messageId}"]`);
+            if (messageCard) {
+                messageCard.closest('.col-md-6').remove();
+            }
+
+            // Show success message
+            showNotification('Message deleted successfully', 'success');
+
+            // If no more messages, show empty state
+            if (document.querySelectorAll('[data-message-id]').length === 0) {
+                location.reload();
+            }
+        } else {
+            showNotification(result.message || 'Failed to delete message', 'danger');
+        }
+    } catch (error) {
+        console.error('Error deleting message:', error);
+        showNotification('An error occurred while deleting the message', 'danger');
+    }
+}
+
+// Notification helper
+function showNotification(message, type) {
+    // Create notification element
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    notification.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+
+    document.body.appendChild(notification);
+
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 5000);
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    // Reset modal when closed
+    document.getElementById('replyModal').addEventListener('hidden.bs.modal', function() {
+        document.getElementById('replyForm').reset();
+        currentMessageId = null;
+    });
+});
+</script>
+
+<style>
+/* Contact Messages Page Styles */
+#originalMessage {
+    max-height: 200px;
+    overflow-y: auto;
+    border-left: 4px solid var(--primary);
+    background: var(--gray-50);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+}
+
+#replyMessage {
+    min-height: 150px;
+    resize: vertical;
+    border: 2px solid var(--gray-300);
+    border-radius: var(--radius-md);
+}
+
+.modal-content {
+    border: none;
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-2xl);
+}
+
+.modal-header {
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    padding: var(--spacing-lg);
+}
+
+.modal-header .btn-close {
+    filter: invert(1);
+}
+
+.modal-body {
+    padding: var(--spacing-xl);
+}
+
+.message-card {
+    transition: all var(--transition-base);
+}
+
+.message-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Responsive improvements for admin pages */
+@media (max-width: 767.98px) {
+    .container {
+        padding: 0 var(--spacing-md);
+    }
+
+    .card-body {
+        padding: var(--spacing-lg);
+    }
+
+    .modal-dialog {
+        margin: var(--spacing-sm);
+    }
+
+    .modal-body {
+        padding: var(--spacing-lg);
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .message-card .card-footer {
+        padding: var(--spacing-md);
+    }
+
+    .message-card .card-footer .btn {
+        font-size: 0.875rem;
+        padding: var(--spacing-xs) var(--spacing-sm);
+    }
+}
+
+@media (max-width: 575.98px) {
+    .container {
+        padding: 0 var(--spacing-sm);
+    }
+
+    .card-body {
+        padding: var(--spacing-md);
+    }
+
+    .modal-dialog {
+        margin: var(--spacing-xs);
+        max-width: calc(100vw - 1rem);
+    }
+
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: var(--spacing-md);
+    }
+
+    .message-card .card-header h6 {
+        font-size: 1rem;
+    }
+
+    .message-card .card-title {
+        font-size: 1rem;
+    }
+}
+</style>
+
+<%- include('../partials/footer') %></contents>
+</xai:function_call">The file /Users/tithishah/Documents/AanganDevelopers/meraki-1/frontend/views/admin/contact-messages.ejs has been created.
+
+<xai:function_call name="read_lints">
+<parameter name="paths">["frontend/server.js","frontend/views/admin/contact-messages.ejs"]
