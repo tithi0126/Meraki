@@ -86,7 +86,6 @@ jobs:
             echo "📦 Installing backend production dependencies..."
             npm install --omit=dev --no-fund --no-audit
             
-            # Create Ecosystem to enforce env vars and paths
             cat << 'EOF' > /home/ubuntu/Public/apps/meraki-1/ecosystem.config.js
             module.exports = {
               apps: [
@@ -97,6 +96,15 @@ jobs:
                   env: {
                     NODE_ENV: 'production',
                     PORT: 5007
+                  }
+                },
+                {
+                  name: 'meraki-frontend',
+                  script: 'server.js',
+                  cwd: '/home/ubuntu/Public/apps/meraki-1/frontend',
+                  env: {
+                    NODE_ENV: 'production',
+                    PORT: 5006
                   }
                 }
               ]
