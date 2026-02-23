@@ -60,9 +60,9 @@ jobs:
           username: root
           key: ${{ secrets.HOSTINGER_SSH_KEY }}
           port: ${{ secrets.HOSTINGER_PORT || 22 }}
-          source: "frontend/dist/*"
+          source: "frontend/dist,frontend/server.js,frontend/package.json,frontend/package-lock.json"
           target: "/home/ubuntu/Public/apps/meraki-1/frontend_tmp"
-          strip_components: 2
+          strip_components: 1
           rm: false
           timeout: 120s
           command_timeout: 10m
@@ -84,6 +84,11 @@ jobs:
             # Setup Backend
             cd /home/ubuntu/Public/apps/meraki-1/backend
             echo "📦 Installing backend production dependencies..."
+            npm install --omit=dev --no-fund --no-audit
+            
+            # Setup Frontend
+            cd /home/ubuntu/Public/apps/meraki-1/frontend
+            echo "📦 Installing frontend production dependencies..."
             npm install --omit=dev --no-fund --no-audit
             
             cat << 'EOF' > /home/ubuntu/Public/apps/meraki-1/ecosystem.config.js
@@ -117,8 +122,10 @@ jobs:
             pm2 delete meraki-backend || true
             pm2 delete meraki-frontend || true
             
-            # Start using the ecosystem config and load local .env files
-            cd /home/ubuntu/Public/apps/meraki-1/backend && export $(grep -v '^#' .env | xargs) && cd ../
+            # Start using the ecosystem config and load local .env files if they exist
+            cd /home/ubuntu/Public/apps/meraki-1/backend
+            if [ -f .env ]; then export $(grep -v '^#' .env | xargs); fi
+            cd ../
             
             pm2 start ecosystem.config.js --env production
             pm2 save
