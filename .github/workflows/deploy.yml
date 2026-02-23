@@ -47,6 +47,12 @@ jobs:
           timeout: 120s
           command_timeout: 10m
 
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
+          
       - name: Deploy Frontend to VPS
         uses: appleboy/scp-action@v0.1.7
         with:
@@ -54,9 +60,9 @@ jobs:
           username: root
           key: ${{ secrets.HOSTINGER_SSH_KEY }}
           port: ${{ secrets.HOSTINGER_PORT || 22 }}
-          source: "frontend/*"
+          source: "frontend/dist/*"
           target: "/home/ubuntu/Public/apps/Meraki/frontend_tmp"
-          strip_components: 1
+          strip_components: 2
           rm: false
           timeout: 120s
           command_timeout: 10m
@@ -78,11 +84,6 @@ jobs:
             # Setup Backend
             cd /home/ubuntu/Public/apps/Meraki/backend
             echo "📦 Installing backend production dependencies..."
-            npm install --omit=dev --no-fund --no-audit
-            
-            # Setup Frontend
-            cd /home/ubuntu/Public/apps/Meraki/frontend
-            echo "📦 Installing frontend production dependencies..."
             npm install --omit=dev --no-fund --no-audit
             
             # Create Ecosystem to enforce env vars and paths
