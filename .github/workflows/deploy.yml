@@ -23,9 +23,9 @@ jobs:
           timeout: 300s
           command_timeout: 20m
           script: |
-            mkdir -p /home/ubuntu/Public/apps/Meraki
-            mkdir -p /home/ubuntu/Public/apps/Meraki/backend
-            mkdir -p /home/ubuntu/Public/apps/Meraki/frontend
+            mkdir -p /home/ubuntu/Public/apps/meraki-1
+            mkdir -p /home/ubuntu/Public/apps/meraki-1/backend
+            mkdir -p /home/ubuntu/Public/apps/meraki-1/frontend
             
             echo "📊 Checking disk space..."
             df -h
@@ -41,7 +41,7 @@ jobs:
           key: ${{ secrets.HOSTINGER_SSH_KEY }}
           port: ${{ secrets.HOSTINGER_PORT || 22 }}
           source: "backend/*"
-          target: "/home/ubuntu/Public/apps/Meraki/backend"
+          target: "/home/ubuntu/Public/apps/meraki-1/backend"
           strip_components: 1
           rm: false
           timeout: 120s
@@ -61,7 +61,7 @@ jobs:
           key: ${{ secrets.HOSTINGER_SSH_KEY }}
           port: ${{ secrets.HOSTINGER_PORT || 22 }}
           source: "frontend/dist/*"
-          target: "/home/ubuntu/Public/apps/Meraki/frontend_tmp"
+          target: "/home/ubuntu/Public/apps/meraki-1/frontend_tmp"
           strip_components: 2
           rm: false
           timeout: 120s
@@ -78,22 +78,22 @@ jobs:
           command_timeout: 10m
           script: |
             # Move frontend files securely replacing only old files
-            rsync -av /home/ubuntu/Public/apps/Meraki/frontend_tmp/ /home/ubuntu/Public/apps/Meraki/frontend/
-            rm -rf /home/ubuntu/Public/apps/Meraki/frontend_tmp
+            rsync -av /home/ubuntu/Public/apps/meraki-1/frontend_tmp/ /home/ubuntu/Public/apps/meraki-1/frontend/
+            rm -rf /home/ubuntu/Public/apps/meraki-1/frontend_tmp
             
             # Setup Backend
-            cd /home/ubuntu/Public/apps/Meraki/backend
+            cd /home/ubuntu/Public/apps/meraki-1/backend
             echo "📦 Installing backend production dependencies..."
             npm install --omit=dev --no-fund --no-audit
             
             # Create Ecosystem to enforce env vars and paths
-            cat << 'EOF' > /home/ubuntu/Public/apps/Meraki/ecosystem.config.js
+            cat << 'EOF' > /home/ubuntu/Public/apps/meraki-1/ecosystem.config.js
             module.exports = {
               apps: [
                 {
                   name: 'meraki-backend',
                   script: 'server.js',
-                  cwd: '/home/ubuntu/Public/apps/Meraki/backend',
+                  cwd: '/home/ubuntu/Public/apps/meraki-1/backend',
                   env: {
                     NODE_ENV: 'production',
                     PORT: 5007
@@ -103,14 +103,14 @@ jobs:
             };
             EOF
             
-            cd /home/ubuntu/Public/apps/Meraki
+            cd /home/ubuntu/Public/apps/meraki-1
             
             # Ensure PM2 uses the correct envs and folders
             pm2 delete meraki-backend || true
             pm2 delete meraki-frontend || true
             
             # Start using the ecosystem config and load local .env files
-            cd /home/ubuntu/Public/apps/Meraki/backend && export $(grep -v '^#' .env | xargs) && cd ../
+            cd /home/ubuntu/Public/apps/meraki-1/backend && export $(grep -v '^#' .env | xargs) && cd ../
             
             pm2 start ecosystem.config.js --env production
             pm2 save
