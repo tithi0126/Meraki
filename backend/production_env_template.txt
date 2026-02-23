@@ -1,0 +1,27 @@
+# Production Backend Environment Configuration
+# ==============================================
+# Copy this to .env.production and configure for production
+
+# Server Configuration
+PORT=5005
+NODE_ENV=production
+
+# Database Configuration - MongoDB Atlas
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/meraki_prod?retryWrites=true&w=majority
+
+# Session Configuration - Use a strong, random secret
+SESSION_SECRET=your-super-secret-session-key-change-this-in-production-64-characters-minimum
+
+# CORS Configuration - Use your actual frontend domain
+FRONTEND_URL=https://your-frontend-domain.com
+
+# Security Configuration - Enable for HTTPS
+COOKIE_SECURE=true
+COOKIE_SAMESITE=strict
+
+# Logging Configuration
+LOG_LEVEL=warn
+
+# Rate Limiting Configuration
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
