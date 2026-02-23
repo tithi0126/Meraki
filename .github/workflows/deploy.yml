@@ -54,7 +54,7 @@ jobs:
           username: root
           key: ${{ secrets.HOSTINGER_SSH_KEY }}
           port: ${{ secrets.HOSTINGER_PORT || 22 }}
-          source: "frontend/*"
+          source: "frontend/"
           target: "/home/ubuntu/Public/apps/Meraki/frontend"
           strip_components: 1
           rm: false
@@ -76,28 +76,18 @@ jobs:
             echo "📦 Installing backend production dependencies..."
             npm install --omit=dev --no-fund --no-audit
             
-            if [ ! -f .env ]; then
-              cp production_env_template.txt .env || echo "PORT=5007" > .env
-            fi
+            # Restart processes
+            cd /home/ubuntu/Public/apps/Meraki/backend
+            export $(grep -v '^#' .env | xargs)
+            pm2 restart meraki-backend --update-env || pm2 start server.js --name meraki-backend
             
             # Setup Frontend
             cd /home/ubuntu/Public/apps/Meraki/frontend
             echo "📦 Installing frontend production dependencies..."
             npm install --omit=dev --no-fund --no-audit
             
-            if [ ! -f .env ]; then
-              cp production_env_template.txt .env || echo "PORT=3007" > .env
-            fi
-
-            if ! command -v pm2 &> /dev/null; then
-              npm install -g pm2
-            fi
-
-            # Restart processes
-            cd /home/ubuntu/Public/apps/Meraki/backend
-            NODE_ENV=production pm2 restart meraki-backend --update-env || NODE_ENV=production pm2 start server.js --name meraki-backend
-            
             cd /home/ubuntu/Public/apps/Meraki/frontend
-            NODE_ENV=production pm2 restart meraki-frontend --update-env || NODE_ENV=production pm2 start server.js --name meraki-frontend
+            export $(grep -v '^#' .env | xargs)
+            pm2 restart meraki-frontend --update-env || pm2 start server.js --name meraki-frontend
             
             pm2 save
