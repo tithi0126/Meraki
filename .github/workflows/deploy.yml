@@ -100,7 +100,7 @@ jobs:
                   cwd: '/home/ubuntu/Public/apps/meraki-1/backend',
                   env: {
                     NODE_ENV: 'production',
-                    PORT: 5007
+                    PORT: 5005
                   }
                 },
                 {
