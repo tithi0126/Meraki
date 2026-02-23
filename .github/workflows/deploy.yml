@@ -97,15 +97,6 @@ jobs:
                     NODE_ENV: 'production',
                     PORT: 5007
                   }
-                },
-                {
-                  name: 'meraki-frontend',
-                  script: 'server.js',
-                  cwd: '/home/ubuntu/Public/apps/Meraki/frontend',
-                  env: {
-                    NODE_ENV: 'production',
-                    PORT: 3007
-                  }
                 }
               ]
             };
@@ -119,7 +110,6 @@ jobs:
             
             # Start using the ecosystem config and load local .env files
             cd /home/ubuntu/Public/apps/Meraki/backend && export $(grep -v '^#' .env | xargs) && cd ../
-            cd /home/ubuntu/Public/apps/Meraki/frontend && export $(grep -v '^#' .env | xargs) && cd ../
             
             pm2 start ecosystem.config.js --env production
             pm2 save
