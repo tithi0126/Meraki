@@ -1,0 +1,231 @@
+<%- include('partials/header') %>
+    <%- include('partials/navbar') %>
+
+        <!-- Hero Section -->
+        <section class="hero-medium d-flex align-items-center justify-content-center text-center text-white"
+            style="min-height: 50vh; background: linear-gradient(rgba(44, 24, 16, 0.7), rgba(44, 24, 16, 0.7)), url('https://images.unsplash.com/photo-1497935586351-b67a49e012bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1951&q=80') center/cover no-repeat;">
+            <div class="container" data-reveal>
+                <span class="d-block text-uppercase mb-3 text-warning"
+                    style="letter-spacing: 3px; font-weight: 600;">We're Here for You</span>
+                <h1 class="display-3 fw-bold mb-0 font-display text-white">Get In Touch</h1>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="section-fade-in py-5 mt-n5 position-relative" style="z-index: 2;">
+            <div class="container">
+                <div class="row g-5">
+                    <!-- Contact Form -->
+                    <div class="col-lg-7">
+                        <div class="card border-0 shadow-lg rounded-4 overflow-hidden h-100" data-reveal>
+                            <div class="card-body p-4 p-md-5 bg-white">
+                                <div class="mb-5">
+                                    <h3 class="font-display fw-bold mb-3">Send us a Message</h3>
+                                    <p class="text-muted">Have a question or just want to say hello? Fill out the form
+                                        below and we'll get back to you within 24 hours.</p>
+                                </div>
+
+                                <% if (success) { %>
+                                    <div
+                                        class="alert alert-success alert-dismissible fade show rounded-3 border-0 shadow-sm mb-4">
+                                        <i class="fas fa-check-circle me-2"></i>
+                                        <%= success %>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    </div>
+                                    <% } %>
+                                        <% if (error) { %>
+                                            <div
+                                                class="alert alert-danger alert-dismissible fade show rounded-3 border-0 shadow-sm mb-4">
+                                                <i class="fas fa-exclamation-circle me-2"></i>
+                                                <%= error %>
+                                                    <button type="button" class="btn-close"
+                                                        data-bs-dismiss="alert"></button>
+                                            </div>
+                                            <% } %>
+
+                                                <form id="contactForm" action="/contact" method="POST">
+                                                    <div class="row g-4">
+                                                        <div class="col-md-6">
+                                                            <div class="form-floating">
+                                                                <input type="text"
+                                                                    class="form-control bg-light border-0" id="name"
+                                                                    name="name" placeholder="Your Name" required>
+                                                                <label for="name" class="text-muted">Your Name</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-floating">
+                                                                <input type="email"
+                                                                    class="form-control bg-light border-0" id="email"
+                                                                    name="email" placeholder="your@email.com" required>
+                                                                <label for="email" class="text-muted">Email
+                                                                    Address</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="form-floating">
+                                                                <input type="text"
+                                                                    class="form-control bg-light border-0" id="subject"
+                                                                    name="subject" placeholder="Subject" required>
+                                                                <label for="subject" class="text-muted">Subject</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="form-floating">
+                                                                <textarea class="form-control bg-light border-0"
+                                                                    id="message" name="message"
+                                                                    style="height: 150px; resize: none;"
+                                                                    placeholder="Your message here..."
+                                                                    required></textarea>
+                                                                <label for="message" class="text-muted">Message</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 mt-4">
+                                                            <button type="submit"
+                                                                class="btn btn-primary btn-lg w-100 rounded-pill py-3 shadow-hover">
+                                                                <span class="fw-semibold text-uppercase"
+                                                                    style="letter-spacing: 1px;">Send Message</span>
+                                                                <i class="fas fa-paper-plane ms-2"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Info & Map -->
+                    <div class="col-lg-5">
+                        <div class="d-flex flex-column gap-4 h-100">
+                            <!-- Info Cards - Redesigned -->
+                            <div class="d-flex flex-column gap-3">
+                                <!-- Address -->
+                                <div class="card border-0 shadow-sm rounded-4 overflow-hidden" data-reveal
+                                    style="transition-delay: 0.1s;">
+                                    <div class="card-body p-4 d-flex align-items-center gap-4">
+                                        <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 text-primary"
+                                            style="width: 60px; height: 60px; font-size: 1.5rem;">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="text-uppercase text-muted small fw-bold mb-1"
+                                                style="letter-spacing: 1px;">Visit Us</h6>
+                                            <p class="mb-0 fw-medium">201, SNS Sparkle, Opp. Starbucks,<br>City Light
+                                                Town, Surat</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Phone & Email Row -->
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <a href="tel:+919876543210"
+                                            class="card border-0 shadow-sm rounded-4 overflow-hidden text-decoration-none h-100 card-hover">
+                                            <div class="card-body p-4 text-center">
+                                                <div class="bg-warning bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3 text-warning"
+                                                    style="width: 50px; height: 50px; font-size: 1.25rem;">
+                                                    <i class="fas fa-phone"></i>
+                                                </div>
+                                                <h6 class="text-dark fw-bold mb-1">Call Us</h6>
+                                                <small class="text-muted">+91 98765 43210</small>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <a href="mailto:info@merakicoffee.com"
+                                            class="card border-0 shadow-sm rounded-4 overflow-hidden text-decoration-none h-100 card-hover">
+                                            <div class="card-body p-4 text-center">
+                                                <div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3 text-success"
+                                                    style="width: 50px; height: 50px; font-size: 1.25rem;">
+                                                    <i class="fas fa-envelope"></i>
+                                                </div>
+                                                <h6 class="text-dark fw-bold mb-1">Email Us</h6>
+                                                <small class="text-muted">info@meraki.com</small>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Hours -->
+                                <div class="card border-0 shadow-sm rounded-4 overflow-hidden" data-reveal
+                                    style="transition-delay: 0.2s;">
+                                    <div class="card-body p-4 d-flex align-items-center gap-4">
+                                        <div class="bg-danger bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 text-danger"
+                                            style="width: 60px; height: 60px; font-size: 1.5rem;">
+                                            <i class="fas fa-clock"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="text-uppercase text-muted small fw-bold mb-1"
+                                                style="letter-spacing: 1px;">Opening Hours</h6>
+                                            <p class="mb-0 fw-medium">Mon - Sun: 7:00 AM - 11:00 PM</p>
+                                            <small class="text-success"><i class="fas fa-dot-circle me-1 small"></i>Open
+                                                Now</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map -->
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden flex-grow-1" data-reveal
+                        style="transition-delay: 0.2s; min-height: 300px;">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3720.656517173663!2d72.78496221493529!3d21.166060185923985!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be04dec8b56d817%3A0x692b115b8045938d!2sSNS%20Sparkle!5e0!3m2!1sen!2sin!4v1625567890123!5m2!1sen!2sin"
+                            width="100%" height="100%"
+                            style="border:0; filter: grayscale(100%) contrast(1.2) opacity(0.8);" allowfullscreen=""
+                            loading="lazy">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        </section>
+
+        <!-- FAQ / Extra Section -->
+        <section class="py-5 bg-light mb-5">
+            <div class="container py-4">
+                <div class="text-center mb-5" data-reveal>
+                    <h2 class="font-display fw-bold">Common Questions</h2>
+                    <div class="divider mx-auto my-3"></div>
+                </div>
+
+                <div class="row justify-content-center g-4">
+                    <div class="col-md-4" data-reveal style="transition-delay: 0.1s;">
+                        <div class="bg-white p-4 rounded-4 shadow-sm h-100 text-center">
+                            <div class="mb-3 text-primary">
+                                <i class="fas fa-wifi fa-2x"></i>
+                            </div>
+                            <h5 class="fw-bold mb-2">Do you have Wi-Fi?</h5>
+                            <p class="text-muted mb-0">Yes! We offer free high-speed Wi-Fi for all our customers. It's a
+                                perfect spot for remote work.</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4" data-reveal style="transition-delay: 0.2s;">
+                        <div class="bg-white p-4 rounded-4 shadow-sm h-100 text-center">
+                            <div class="mb-3 text-primary">
+                                <i class="fas fa-calendar-alt fa-2x"></i>
+                            </div>
+                            <h5 class="fw-bold mb-2">Do I need a reservation?</h5>
+                            <p class="text-muted mb-0">Reservations are recommended for weekends, but walk-ins are
+                                always welcome!</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4" data-reveal style="transition-delay: 0.3s;">
+                        <div class="bg-white p-4 rounded-4 shadow-sm h-100 text-center">
+                            <div class="mb-3 text-primary">
+                                <i class="fas fa-leaf fa-2x"></i>
+                            </div>
+                            <h5 class="fw-bold mb-2">Vegan Options?</h5>
+                            <p class="text-muted mb-0">Absolutely! We have a wide range of vegan pastries and milk
+                                alternatives available.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <%- include('partials/footer') %>

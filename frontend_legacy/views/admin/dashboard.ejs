@@ -1,0 +1,308 @@
+<%- include('../partials/header') %>
+    <%- include('../partials/navbar') %>
+
+        <!-- Admin Header -->
+        <div class="bg-primary text-white py-5 mb-5"
+            style="background: linear-gradient(135deg, #2C1810 0%, #4E342E 100%);">
+            <div class="container">
+                <h1 class="display-5 fw-bold font-display mb-2 text-white">
+                    <i class="fas fa-tachometer-alt me-3 text-warning"></i>Dashboard Overview
+                </h1>
+                <p class="lead opacity-75 mb-0 text-white">Welcome back, Admin. Here's what's happening today.</p>
+            </div>
+        </div>
+
+        <div class="container pb-5">
+
+            <!-- Statistics Cards -->
+            <div class="row g-4 mb-5">
+                <!-- Card 1 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm border-start border-4 border-warning px-2">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="text-uppercase text-muted small fw-bold mb-1">Total Orders</p>
+                                    <h2 class="mb-0 font-display fw-bold">
+                                        <%= stats.totalOrders %>
+                                    </h2>
+                                </div>
+                                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 50px; height: 50px;">
+                                    <i class="fas fa-shopping-bag fa-lg text-warning"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm border-start border-4 border-warning px-2">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="text-uppercase text-muted small fw-bold mb-1">Pending</p>
+                                    <h2 class="mb-0 font-display fw-bold">
+                                        <%= stats.pendingOrders %>
+                                    </h2>
+                                </div>
+                                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 50px; height: 50px;">
+                                    <i class="fas fa-clock fa-lg text-warning"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm border-start border-4 border-success px-2">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="text-uppercase text-muted small fw-bold mb-1">Revenue</p>
+                                    <h2 class="mb-0 font-display fw-bold text-success">₹<%= stats.totalRevenue %>
+                                    </h2>
+                                </div>
+                                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 50px; height: 50px;">
+                                    <i class="fas fa-rupee-sign fa-lg text-success"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm border-start border-4 border-info px-2">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="text-uppercase text-muted small fw-bold mb-1">Total Customers</p>
+                                    <h2 class="mb-0 font-display fw-bold">
+                                        <%= stats.totalCustomers %>
+                                    </h2>
+                                </div>
+                                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 50px; height: 50px;">
+                                    <i class="fas fa-users fa-lg text-info"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Row 2 -->
+                <!-- Card 5 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm border-start border-4 border-secondary px-2">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="text-uppercase text-muted small fw-bold mb-1">Menu Items</p>
+                                    <h2 class="mb-0 font-display fw-bold">
+                                        <%= stats.totalMenuItems %>
+                                    </h2>
+                                </div>
+                                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 50px; height: 50px;">
+                                    <i class="fas fa-coffee fa-lg text-secondary"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm border-start border-4 border-danger px-2">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="text-uppercase text-muted small fw-bold mb-1">Pending Reviews</p>
+                                    <h2 class="mb-0 font-display fw-bold">
+                                        <%= stats.pendingReviews %>
+                                    </h2>
+                                </div>
+                                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 50px; height: 50px;">
+                                    <i class="fas fa-star fa-lg text-danger"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 7 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 border-0 shadow-sm border-start border-4 border-primary px-2">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <p class="text-uppercase text-muted small fw-bold mb-1">Messages</p>
+                                    <h2 class="mb-0 font-display fw-bold">
+                                        <%= stats.totalContactMessages %>
+                                    </h2>
+                                </div>
+                                <div class="bg-light rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 50px; height: 50px;">
+                                    <i class="fas fa-envelope fa-lg text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Split -->
+            <div class="row g-4">
+                <!-- Quick Actions -->
+                <div class="col-lg-4 order-lg-2">
+                    <div class="card border-0 shadow-sm rounded-4">
+                        <div class="card-header bg-white border-0 py-3">
+                            <h5 class="mb-0 font-display fw-bold">Quick Actions</h5>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="list-group list-group-flush rounded-bottom-4">
+                                <a href="/admin/menu"
+                                    class="list-group-item list-group-item-action py-3 px-4 d-flex align-items-center">
+                                    <div class="bg-primary-subtle text-primary rounded px-2 py-1 me-3">
+                                        <i class="fas fa-utensils"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">Manage Menu</h6>
+                                        <small class="text-muted">Add or update items</small>
+                                    </div>
+                                    <i class="fas fa-chevron-right ms-auto text-muted small"></i>
+                                </a>
+                                <a href="/admin/orders"
+                                    class="list-group-item list-group-item-action py-3 px-4 d-flex align-items-center">
+                                    <div class="bg-warning-subtle text-warning rounded px-2 py-1 me-3">
+                                        <i class="fas fa-clipboard-list"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">View Orders</h6>
+                                        <small class="text-muted">Track and update status</small>
+                                    </div>
+                                    <i class="fas fa-chevron-right ms-auto text-muted small"></i>
+                                </a>
+                                <a href="/admin/reviews"
+                                    class="list-group-item list-group-item-action py-3 px-4 d-flex align-items-center">
+                                    <div class="bg-info-subtle text-info rounded px-2 py-1 me-3">
+                                        <i class="fas fa-comments"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">Manage Reviews</h6>
+                                        <small class="text-muted">Approve customer feedback</small>
+                                    </div>
+                                    <i class="fas fa-chevron-right ms-auto text-muted small"></i>
+                                </a>
+                                <a href="/admin/contact-messages"
+                                    class="list-group-item list-group-item-action py-3 px-4 d-flex align-items-center">
+                                    <div class="bg-success-subtle text-success rounded px-2 py-1 me-3">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">Contact Messages</h6>
+                                        <small class="text-muted">Read enquiries</small>
+                                    </div>
+                                    <i class="fas fa-chevron-right ms-auto text-muted small"></i>
+                                </a>
+                                <a href="/"
+                                    class="list-group-item list-group-item-action py-3 px-4 d-flex align-items-center bg-light">
+                                    <div class="bg-secondary-subtle text-secondary rounded px-2 py-1 me-3">
+                                        <i class="fas fa-home"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">View Live Site</h6>
+                                        <small class="text-muted">Go to homepage</small>
+                                    </div>
+                                    <i class="fas fa-external-link-alt ms-auto text-muted small"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Orders -->
+                <div class="col-lg-8 order-lg-1">
+                    <div class="card border-0 shadow-sm rounded-4 h-100">
+                        <div
+                            class="card-header bg-white border-0 py-3 d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 font-display fw-bold">Recent Orders</h5>
+                            <a href="/admin/orders" class="btn btn-sm btn-outline-primary rounded-pill px-3">View
+                                All</a>
+                        </div>
+                        <div class="card-body p-0">
+                            <% if (recentOrders && recentOrders.length> 0) { %>
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <thead class="bg-light">
+                                            <tr>
+                                                <th class="px-4 py-3 text-muted small text-uppercase fw-bold border-0">
+                                                    Order ID</th>
+                                                <th class="py-3 text-muted small text-uppercase fw-bold border-0">
+                                                    Customer</th>
+                                                <th class="py-3 text-muted small text-uppercase fw-bold border-0">Amount
+                                                </th>
+                                                <th class="py-3 text-muted small text-uppercase fw-bold border-0">Status
+                                                </th>
+                                                <th class="py-3 text-muted small text-uppercase fw-bold border-0">Date
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="border-top-0">
+                                            <% recentOrders.forEach(order=> { %>
+                                                <tr>
+                                                    <td class="px-4 fw-bold">#<%= order.id %>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-2"
+                                                                style="width: 30px; height: 30px;">
+                                                                <i class="fas fa-user small text-muted"></i>
+                                                            </div>
+                                                            <%= order.customer_name %>
+                                                        </div>
+                                                    </td>
+                                                    <td class="fw-bold">₹<%= parseFloat(order.total_amount).toFixed(2)
+                                                            %>
+                                                    </td>
+                                                    <td>
+                                                        <% if (order.status==='delivered' ) { %>
+                                                            <span
+                                                                class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3">Delivered</span>
+                                                            <% } else if (order.status==='pending' ) { %>
+                                                                <span
+                                                                    class="badge bg-warning-subtle text-warning border border-warning-subtle rounded-pill px-3">Pending</span>
+                                                                <% } else { %>
+                                                                    <span
+                                                                        class="badge bg-info-subtle text-info border border-info-subtle rounded-pill px-3">
+                                                                        <%= order.status %>
+                                                                    </span>
+                                                                    <% } %>
+                                                    </td>
+                                                    <td class="text-muted small">
+                                                        <%= new Date(order.created_at).toLocaleDateString() %>
+                                                    </td>
+                                                </tr>
+                                                <% }); %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <% } else { %>
+                                    <div class="text-center py-5">
+                                        <i class="fas fa-shopping-basket fa-3x text-light mb-3"></i>
+                                        <p class="text-muted">No recent orders found.</p>
+                                    </div>
+                                    <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include('../partials/footer') %>

@@ -1,0 +1,175 @@
+<%- include('partials/header') %>
+    <%- include('partials/navbar') %>
+
+        <!-- 1. About Hero Section -->
+        <section class="hero-small d-flex align-items-center justify-content-center text-center text-white"
+            style="min-height: 60vh; background: linear-gradient(rgba(44, 24, 16, 0.7), rgba(44, 24, 16, 0.7)), url('https://images.unsplash.com/photo-1497935586351-b67a49e012bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') center/cover no-repeat;">
+            <div class="container" data-reveal>
+                <span class="d-block text-uppercase mb-3 text-warning"
+                    style="letter-spacing: 3px; font-weight: 600;">Since 2018</span>
+                <h1 class="display-2 fw-bold mb-4 font-display text-white">The Meraki Story</h1>
+                <p class="lead" style="max-width: 600px; margin: 0 auto; opacity: 0.9; ">More than just coffee. It's
+                    about passion, creativity, and the soul we put into everything we do.</p>
+            </div>
+        </section>
+
+        <!-- 2. The Philosophy (Magazine Layout) -->
+        <section class="py-5 my-5">
+            <div class="container">
+                <div class="row align-items-center g-5">
+                    <div class="col-lg-6" data-reveal>
+                        <div class="position-relative ps-4 pt-4">
+                            <div class="position-absolute top-0 start-0 w-100 h-100 border border-2 border-warning rounded-4"
+                                style="z-index: -1;"></div>
+                            <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
+                                class="img-fluid rounded-4 shadow-lg" alt="Barista pouring coffee">
+                        </div>
+                    </div>
+                    <div class="col-lg-6" data-reveal>
+                        <h2 class="display-5 fw-bold mb-4 font-display text-primary">Our Philosophy</h2>
+                        <div class="ps-4 border-start border-4 border-warning mb-4">
+                            <blockquote class="blockquote">
+                                <p class="fst-italic mb-2">"Meraki (n.): To do something with soul, creativity, or love;
+                                    to put something of yourself into your work."</p>
+                            </blockquote>
+                        </div>
+                        <p class="text-muted mb-4 lead">This Greek word isn't just our name—it's our ethos. Founded with
+                            a passion for exceptional coffee, we've created a sanctuary where every cup tells a story.
+                        </p>
+                        <p class="text-muted mb-4">From the farmers who nurture the soil to the roasters who unlock the
+                            bean's potential, and finally to our baristas who craft your beverage with precision—we
+                            believe that every step in the journey matters.</p>
+                        <img src="/images/signature.png" alt="Founder Signature" style="height: 60px; opacity: 0.6;"
+                            onerror="this.style.display='none'">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Our Values (Grid) -->
+        <section class="py-5 bg-light">
+            <div class="container py-4">
+                <div class="text-center mb-5" data-reveal>
+                    <h2 class="display-5 fw-bold font-display text-primary">Why We Do It</h2>
+                    <p class="text-muted">The pillars that define our craft</p>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Value 1 -->
+                    <div class="col-md-6 col-lg-3" data-reveal>
+                        <div class="card h-100 border-0 shadow-sm text-center p-4 hover-lift">
+                            <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle shadow-sm mb-4"
+                                style="width: 80px; height: 80px;">
+                                <i class="fas fa-leaf fa-2x text-success"></i>
+                            </div>
+                            <h4 class="h5 fw-bold mb-3">Ethical Sourcing</h4>
+                            <p class="text-muted small">We partner strictly with sustainable farms, ensuring fair wages
+                                and environmentally friendly practices.</p>
+                        </div>
+                    </div>
+
+                    <!-- Value 2 -->
+                    <div class="col-md-6 col-lg-3" data-reveal>
+                        <div class="card h-100 border-0 shadow-sm text-center p-4 hover-lift">
+                            <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle shadow-sm mb-4"
+                                style="width: 80px; height: 80px;">
+                                <i class="fas fa-mug-hot fa-2x text-primary"></i>
+                            </div>
+                            <h4 class="h5 fw-bold mb-3">Mastery</h4>
+                            <p class="text-muted small">Our baristas are constantly training and refining their skills
+                                to perform the perfect extraction.</p>
+                        </div>
+                    </div>
+
+                    <!-- Value 3 -->
+                    <div class="col-md-6 col-lg-3" data-reveal>
+                        <div class="card h-100 border-0 shadow-sm text-center p-4 hover-lift">
+                            <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle shadow-sm mb-4"
+                                style="width: 80px; height: 80px;">
+                                <i class="fas fa-users fa-2x text-warning"></i>
+                            </div>
+                            <h4 class="h5 fw-bold mb-3">Community</h4>
+                            <p class="text-muted small">We're a hub for connection. A place to meet, work, dream, and
+                                share moments together.</p>
+                        </div>
+                    </div>
+
+                    <!-- Value 4 -->
+                    <div class="col-md-6 col-lg-3" data-reveal>
+                        <div class="card h-100 border-0 shadow-sm text-center p-4 hover-lift">
+                            <div class="d-inline-flex align-items-center justify-content-center bg-white rounded-circle shadow-sm mb-4"
+                                style="width: 80px; height: 80px;">
+                                <i class="fas fa-magic fa-2x text-info"></i>
+                            </div>
+                            <h4 class="h5 fw-bold mb-3">Innovation</h4>
+                            <p class="text-muted small">Always experimenting with new brewing methods, origins, and
+                                flavor profiles to surprise your palate.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Locations (Premium List) -->
+        <section class="py-5 my-5">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-5 mb-4 mb-lg-0" data-reveal>
+                        <h2 class="display-4 fw-bold font-display text-primary mb-4">Find Your<br>Nearest Meraki</h2>
+                        <p class="lead text-muted mb-5">Open Daily: 7:00 AM - 10:00 PM</p>
+                        <a href="/contact" class="btn btn-primary rounded-pill px-5 py-3" >Get In Touch</a>
+                    </div>
+
+                    <div class="col-lg-7" data-reveal>
+                        <div class="vstack gap-3">
+                            <!-- Location 1 -->
+                            <div class="card border-0 bg-light p-4 transition-hover">
+                                <div class="d-flex align-items-start">
+                                    <i class="fas fa-map-marker-alt fa-2x text-warning me-4 mt-1"></i>
+                                    <div>
+                                        <h4 class="fw-bold mb-2">City Light Town</h4>
+                                        <p class="text-muted mb-0">Sangam Society, 201, SNS Sparkle, 3, opp. Starbucks,
+                                            City Light Town, Athwa, Surat</p>
+                                        <a href="#"
+                                            class="btn btn-link text-primary p-0 mt-2 text-decoration-none small fw-bold">Get
+                                            Directions <i class="fas fa-arrow-right ms-1"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Location 2 -->
+                            <div class="card border-0 bg-light p-4 transition-hover">
+                                <div class="d-flex align-items-start">
+                                    <i class="fas fa-map-marker-alt fa-2x text-warning me-4 mt-1"></i>
+                                    <div>
+                                        <h4 class="fw-bold mb-2">Vesu Main Road</h4>
+                                        <p class="text-muted mb-0">SNS Platina, 108, Vesu Main Road, nr. Reliance
+                                            Market, Someshwara Enclave, Vesu, Surat</p>
+                                        <a href="#"
+                                            class="btn btn-link text-primary p-0 mt-2 text-decoration-none small fw-bold">Get
+                                            Directions <i class="fas fa-arrow-right ms-1"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Location 3 -->
+                            <div class="card border-0 bg-light p-4 transition-hover">
+                                <div class="d-flex align-items-start">
+                                    <i class="fas fa-map-marker-alt fa-2x text-warning me-4 mt-1"></i>
+                                    <div>
+                                        <h4 class="fw-bold mb-2">SNS Arista</h4>
+                                        <p class="text-muted mb-0">SNS Arista, G/3, opp. Happy Residency, Vesu, Surat,
+                                            Gujarat 395007</p>
+                                        <a href="#"
+                                            class="btn btn-link text-primary p-0 mt-2 text-decoration-none small fw-bold">Get
+                                            Directions <i class="fas fa-arrow-right ms-1"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <%- include('partials/footer') %>

@@ -1,0 +1,117 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container my-5">
+    <h1 class="mb-4"><i class="fas fa-comments"></i> Review Management</h1>
+    
+    <% if (reviews && reviews.length > 0) { %>
+        <div class="row">
+            <% reviews.forEach(review => { %>
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm <%= review.is_approved ? 'border-success' : 'border-warning' %>" data-review-id="<%= review.id %>">
+                        <div class="card-header <%= review.is_approved ? 'bg-success' : 'bg-warning' %> text-white">
+                            <div class="d-flex justify-content-between">
+                                <span><%= review.user_name %></span>
+                                <span>
+                                    <% for(let i = 0; i < review.rating; i++) { %>
+                                        <i class="fas fa-star"></i>
+                                    <% } %>
+                                </span>
+                            </div>
+                            <small><%= review.user_email %></small>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text"><%= review.comment %></p>
+                            <p class="text-muted small mb-0">
+                                <%= new Date(review.created_at).toLocaleString() %>
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <% if (!review.is_approved) { %>
+                                <button class="btn btn-success btn-sm" onclick="approveReview('<%= review.id %>')">
+                                    <i class="fas fa-check"></i> Approve
+                                </button>
+                            <% } %>
+                            <button class="btn btn-danger btn-sm" onclick="deleteReview('<%= review.id %>')">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <div class="alert alert-info text-center">
+            <i class="fas fa-info-circle"></i> No reviews found
+        </div>
+    <% } %>
+</div>
+
+<script>
+async function approveReview(id) {
+    try {
+        const response = await api.approveReview(id);
+        if (response.success) {
+            showNotification('Review approved successfully!', 'success');
+            // Update card appearance
+            const card = document.querySelector(`[data-review-id="${id}"]`);
+            if (card) {
+                card.classList.remove('border-warning');
+                card.classList.add('border-success');
+                const header = card.querySelector('.card-header');
+                if (header) {
+                    header.classList.remove('bg-warning');
+                    header.classList.add('bg-success');
+                }
+                // Hide approve button
+                const approveBtn = card.querySelector('.btn-success');
+                if (approveBtn) {
+                    approveBtn.style.display = 'none';
+                }
+            }
+        } else {
+            showNotification(response.message || 'Error approving review', 'danger');
+        }
+    } catch (error) {
+        showNotification('Error approving review: ' + error.message, 'danger');
+    }
+}
+
+async function deleteReview(id) {
+    if (confirm('Are you sure you want to delete this review? This action cannot be undone.')) {
+        try {
+            const response = await api.deleteReview(id);
+            if (response.success) {
+                showNotification('Review deleted successfully!', 'success');
+                // Remove card from DOM
+                const card = document.querySelector(`[data-review-id="${id}"]`);
+                if (card) {
+                    card.closest('.col-md-6').remove();
+                }
+            } else {
+                showNotification(response.message || 'Error deleting review', 'danger');
+            }
+        } catch (error) {
+            showNotification('Error deleting review: ' + error.message, 'danger');
+        }
+    }
+}
+
+// Notification function
+function showNotification(message, type = 'info') {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.body.appendChild(alertDiv);
+
+    setTimeout(() => {
+        alertDiv.remove();
+    }, 4000);
+}
+</script>
+
+<%- include('../partials/footer') %>

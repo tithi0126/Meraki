@@ -1,0 +1,164 @@
+<%- include('partials/header') %>
+    <%- include('partials/navbar') %>
+
+        <!-- 1. Reviews Hero -->
+        <section class="hero-small d-flex align-items-center justify-content-center text-center text-white"
+            style="min-height: 50vh; background: linear-gradient(rgba(44, 24, 16, 0.8), rgba(44, 24, 16, 0.8)), url('https://images.unsplash.com/photo-1542181961-9590d0c79dab?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') center/cover no-repeat;">
+            <div class="container" data-reveal>
+                <span class="d-block text-uppercase mb-3 text-warning"
+                    style="letter-spacing: 3px; font-weight: 600;">Community</span>
+                <h1 class="display-2 fw-bold mb-4 font-display text-white">Voices of Meraki</h1>
+                <p class="lead" style="max-width: 600px; margin: 0 auto; opacity: 0.9;">Stories and experiences shared
+                    by our beloved community.</p>
+            </div>
+        </section>
+
+        <!-- 2. Reviews Content -->
+        <section class="py-5 bg-light">
+            <div class="container py-4">
+
+                <!-- Submission Section -->
+                <div class="row justify-content-center mb-5" data-reveal>
+                    <div class="col-lg-8">
+                        <% if (user) { %>
+                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                                <div class="card-body p-5">
+                                    <div class="text-center mb-4">
+                                        <h3 class="font-display fw-bold text-primary mb-2">Share Your Experience</h3>
+                                        <p class="text-muted">How was your visit? We'd love to hear from you.</p>
+                                    </div>
+
+                                    <% if (success) { %>
+                                        <div class="alert alert-success alert-dismissible fade show rounded-3">
+                                            <i class="fas fa-check-circle me-2"></i>
+                                            <%= success %>
+                                                <button type="button" class="btn-close"
+                                                    data-bs-dismiss="alert"></button>
+                                        </div>
+                                        <% } %>
+                                            <% if (error) { %>
+                                                <div class="alert alert-danger alert-dismissible fade show rounded-3">
+                                                    <i class="fas fa-exclamation-circle me-2"></i>
+                                                    <%= error %>
+                                                        <button type="button" class="btn-close"
+                                                            data-bs-dismiss="alert"></button>
+                                                </div>
+                                                <% } %>
+
+                                                    <form id="reviewForm" action="/review/submit" method="POST">
+                                                        <div class="mb-4">
+                                                            <label
+                                                                class="form-label text-uppercase small fw-bold text-muted">Rating</label>
+                                                            <select class="form-select form-select-lg" name="rating"
+                                                                id="rating" required
+                                                                style="border-radius: var(--radius-md);">
+                                                                <option value="">Select a rating...</option>
+                                                                <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
+                                                                <option value="4">⭐⭐⭐⭐ (Good)</option>
+                                                                <option value="3">⭐⭐⭐ (Average)</option>
+                                                                <option value="2">⭐⭐ (Fair)</option>
+                                                                <option value="1">⭐ (Poor)</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-4">
+                                                            <label
+                                                                class="form-label text-uppercase small fw-bold text-muted">Your
+                                                                Review</label>
+                                                            <textarea class="form-control form-control-lg"
+                                                                name="comment" id="comment" rows="4" required
+                                                                placeholder="Tell us about your favorite coffee..."
+                                                                style="border-radius: var(--radius-md);"></textarea>
+                                                        </div>
+                                                        <button type="submit"
+                                                            class="btn btn-primary w-100 btn-lg rounded-pill py-3 fw-bold shadow-sm transition-hover">
+                                                            Publish Review
+                                                        </button>
+                                                    </form>
+                                </div>
+                            </div>
+                            <% } else { %>
+                                <div class="card border-0 bg-white shadow-sm rounded-4 p-5 text-center">
+                                    <i class="fas fa-users fa-3x text-warning mb-4"></i>
+                                    <h3 class="font-display mb-3">Join the Conversation</h3>
+                                    <p class="text-muted mb-4 lead">Sign in to share your Meraki moments with our
+                                        community.</p>
+                                    <a href="/login?redirect=/review"
+                                        class="btn btn-outline-primary rounded-pill px-5 py-2">Login to Review</a>
+                                </div>
+                                <% } %>
+                    </div>
+                </div>
+
+                <hr class="my-5 opacity-10">
+
+                <!-- Reviews Grid -->
+                <div class="d-flex justify-content-between align-items-end mb-5" data-reveal>
+                    <div>
+                        <h2 class="font-display fw-bold text-primary mb-1">Latest Reviews</h2>
+                        <p class="text-muted mb-0">What our guests are saying</p>
+                    </div>
+                    <span class="badge bg-white text-dark border shadow-sm rounded-pill px-3 py-2">
+                        <%= typeof reviews !=='undefined' && reviews ? reviews.length : 0 %> Reviews
+                    </span>
+                </div>
+
+                <div class="row g-4" data-masonry='{"percentPosition": true }'>
+                    <% if (typeof reviews !=='undefined' && reviews && Array.isArray(reviews) && reviews.length> 0) { %>
+                        <% reviews.forEach(review=> { %>
+                            <% let reviewDate='Recent' ; try { if (review.created_at) { reviewDate=new
+                                Date(review.created_at).toLocaleDateString('en-US', { year: 'numeric' , month: 'long' ,
+                                day: 'numeric' }); } } catch(e) {} const userName=review.user_name || 'Anonymous' ;
+                                const initial=userName.charAt(0).toUpperCase(); const rating=parseInt(review.rating) ||
+                                0; %>
+                                <div class="col-md-6 mb-4" data-reveal>
+                                    <div
+                                        class="card h-100 border-0 shadow-sm rounded-4 p-4 position-relative card-hover">
+                                        <!-- Quote Icon bg -->
+                                        <i
+                                            class="fas fa-quote-right position-absolute top-0 end-0 m-4 text-light display-1 opacity-25"></i>
+
+                                        <div class="d-flex align-items-center mb-4 position-relative">
+                                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3 shadow-sm"
+                                                style="width: 50px; height: 50px; font-family: var(--font-display); font-size: 1.25rem;">
+                                                <%= initial %>
+                                            </div>
+                                            <div>
+                                                <h5 class="fw-bold mb-0">
+                                                    <%= userName %>
+                                                </h5>
+                                                <div class="text-warning small">
+                                                    <% for(let i=0; i < rating; i++) { %><i class="fas fa-star"></i>
+                                                        <% } %>
+                                                            <% for(let i=rating; i < 5; i++) { %><i
+                                                                    class="far fa-star text-muted opacity-25"></i>
+                                                                <% } %>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-body p-0 position-relative">
+                                            <p class="mb-3 lead" style="font-size: 1.1rem; line-height: 1.6;">"<%=
+                                                    review.comment %>"</p>
+                                            <p class="text-muted small mb-0 fst-italic">
+                                                <%= reviewDate %>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% }); %>
+                                    <% } else { %>
+                                        <div class="col-12 py-5 text-center">
+                                            <p class="lead text-muted">No reviews yet. Be the first to share your story!
+                                            </p>
+                                        </div>
+                                        <% } %>
+                </div>
+            </div>
+        </section>
+
+        <!-- Masonry Script for layout -->
+        <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
+            integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous"
+            async></script>
+
+        <%- include('partials/footer') %>

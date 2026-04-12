@@ -1,0 +1,194 @@
+<%- include('partials/header') %>
+    <%- include('partials/navbar') %>
+
+        <!-- Hero Section -->
+        <section class="hero-small d-flex align-items-center justify-content-center text-center text-white"
+            style="min-height: 40vh; background: linear-gradient(rgba(44, 24, 16, 0.8), rgba(44, 24, 16, 0.8)), url('https://images.unsplash.com/photo-1511920170033-f8396924c348?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80') center/cover no-repeat;">
+            <div class="container" data-reveal>
+                <span class="d-block text-uppercase mb-3 text-warning"
+                    style="letter-spacing: 3px; font-weight: 600;">Your Journey</span>
+                <h1 class="display-3 fw-bold mb-0 font-display text-white">Order History</h1>
+            </div>
+        </section>
+
+        <section class="section-fade-in py-5" style="min-height: 60vh;">
+            <div class="container">
+
+                <% if (message) { %>
+                    <div class="alert alert-success alert-dismissible fade show rounded-3 border-0 shadow-sm mb-5">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <%= message %>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                    <% } %>
+
+                        <% if (orders && orders.length> 0) { %>
+                            <div class="row justify-content-center">
+                                <div class="col-lg-10">
+                                    <div class="d-flex flex-column gap-4">
+                                        <% orders.forEach((order, index)=> { %>
+                                            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4"
+                                                data-reveal style="transition-delay: <%= index * 0.1 %>s;">
+                                                <!-- Card Header -->
+                                                <div class="card-header bg-white border-bottom border-light p-4">
+                                                    <div
+                                                        class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+                                                        <div class="d-flex align-items-center gap-3">
+                                                            <div class="bg-light rounded-circle d-flex align-items-center justify-content-center"
+                                                                style="width: 48px; height: 48px;">
+                                                                <i class="fas fa-receipt text-primary"></i>
+                                                            </div>
+                                                            <div>
+                                                                <h5 class="mb-0 font-display fw-bold">Order #<%=
+                                                                        order.id %>
+                                                                </h5>
+                                                                <small class="text-muted">
+                                                                    <%= order.created_at ? new
+                                                                        Date(order.created_at).toLocaleDateString('en-US',
+                                                                        { year: 'numeric' , month: 'long' ,
+                                                                        day: 'numeric' , hour: '2-digit' ,
+                                                                        minute: '2-digit' }) : 'Date Unavailable' %>
+                                                                </small>
+                                                            </div>
+                                                        </div>
+
+                                                        <% let badgeClass='bg-secondary-subtle text-secondary' ; let
+                                                            icon='fa-clock' ; if (order.status==='delivered' ) {
+                                                            badgeClass='bg-success-subtle text-success' ;
+                                                            icon='fa-check' ; } else if (order.status==='pending' ) {
+                                                            badgeClass='bg-warning-subtle text-warning' ;
+                                                            icon='fa-hourglass-start' ; } else if
+                                                            (order.status==='confirmed' ) {
+                                                            badgeClass='bg-info-subtle text-info' ; icon='fa-thumbs-up'
+                                                            ; } else if (order.status==='preparing' ) {
+                                                            badgeClass='bg-primary-subtle text-primary' ; icon='fa-fire'
+                                                            ; } else if (order.status==='ready' ) {
+                                                            badgeClass='bg-primary-subtle text-primary' ; icon='fa-box'
+                                                            ; } else if (order.status==='cancelled' ) {
+                                                            badgeClass='bg-danger-subtle text-danger' ; icon='fa-times'
+                                                            ; } %>
+                                                            <span
+                                                                class="badge <%= badgeClass %> rounded-pill px-3 py-2 d-flex align-items-center gap-2">
+                                                                <i class="fas <%= icon %>"></i>
+                                                                <%= order.status ? order.status.toUpperCase()
+                                                                    : 'PENDING' %>
+                                                            </span>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Card Body -->
+                                                <div class="card-body p-4">
+                                                    <div class="row g-4">
+                                                        <!-- Items List -->
+                                                        <div class="col-md-7 border-end-md border-light">
+                                                            <h6 class="text-uppercase text-muted small fw-bold mb-3"
+                                                                style="letter-spacing: 1px;">Items Ordered</h6>
+                                                            <% if (order.items && order.items.length> 0) { %>
+                                                                <ul class="list-unstyled mb-0 d-flex flex-column gap-3">
+                                                                    <% order.items.forEach(item=> { %>
+                                                                        <li
+                                                                            class="d-flex justify-content-between align-items-center">
+                                                                            <div class="d-flex align-items-center">
+                                                                                <span
+                                                                                    class="badge bg-light text-dark rounded-circle me-3"
+                                                                                    style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;">
+                                                                                    <%= item.quantity || 1 %>
+                                                                                </span>
+                                                                                <span class="fw-medium">
+                                                                                    <%= item.name || 'Item' %>
+                                                                                </span>
+                                                                            </div>
+                                                                            <span class="fw-bold text-muted">₹<%=
+                                                                                    ((item.price || 0) * (item.quantity
+                                                                                    || 1)).toFixed(2) %></span>
+                                                                        </li>
+                                                                        <% }); %>
+                                                                </ul>
+                                                                <% } else { %>
+                                                                    <p class="text-muted fst-italic">No items details
+                                                                        available.</p>
+                                                                    <% } %>
+                                                        </div>
+
+                                                        <!-- Delivery & Payment Info -->
+                                                        <div class="col-md-5 ps-md-4">
+                                                            <div class="mb-4">
+                                                                <h6 class="text-uppercase text-muted small fw-bold mb-2"
+                                                                    style="letter-spacing: 1px;">Delivery Details</h6>
+                                                                <p class="mb-1"><i
+                                                                        class="fas fa-map-marker-alt text-warning me-2"
+                                                                        style="width: 20px;"></i>
+                                                                    <%= order.delivery_address || 'N/A' %>
+                                                                </p>
+                                                                <p class="mb-0"><i
+                                                                        class="fas fa-phone text-warning me-2"
+                                                                        style="width: 20px;"></i>
+                                                                    <%= order.contact_number || 'N/A' %>
+                                                                </p>
+                                                            </div>
+
+                                                            <% if (order.notes) { %>
+                                                                <div class="mb-4 bg-light p-3 rounded-3">
+                                                                    <p class="mb-0 small text-muted"><i
+                                                                            class="fas fa-sticky-note me-2"></i>
+                                                                        <strong>Note:</strong>
+                                                                        <%= order.notes %>
+                                                                    </p>
+                                                                </div>
+                                                                <% } %>
+
+                                                                    <div class="border-top pt-3 mt-auto">
+                                                                        <div
+                                                                            class="d-flex justify-content-between align-items-center mb-2">
+                                                                            <span class="text-muted small">Payment
+                                                                                Method</span>
+                                                                            <span class="fw-medium text-capitalize">
+                                                                                <%= order.payment_method || 'N/A' %>
+                                                                            </span>
+                                                                        </div>
+                                                                        <div
+                                                                            class="d-flex justify-content-between align-items-center">
+                                                                            <span class="h6 mb-0">Total Amount</span>
+                                                                            <span class="h4 mb-0 fw-bold text-primary">₹
+                                                                                <%= parseFloat(order.total_amount ||
+                                                                                    0).toFixed(2) %></span>
+                                                                        </div>
+                                                                    </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <% if (order.status==='delivered' ) { %>
+                                                    <div class="card-footer bg-light p-3 text-end border-0">
+                                                        <a href="/menu"
+                                                            class="btn btn-outline-primary btn-sm rounded-pill px-4">
+                                                            <i class="fas fa-redo me-1"></i> Order Again
+                                                        </a>
+                                                    </div>
+                                                    <% } %>
+                                            </div>
+                                            <% }); %>
+                                    </div>
+                                </div>
+                            </div>
+                            <% } else { %>
+                                <div class="text-center py-5" data-reveal>
+                                    <div class="mb-4 position-relative d-inline-block">
+                                        <div class="bg-light rounded-circle d-flex align-items-center justify-content-center p-5"
+                                            style="width: 180px; height: 180px; margin: 0 auto;">
+                                            <i class="fas fa-receipt"
+                                                style="font-size: 4rem; color: var(--primary-light); opacity: 0.5;"></i>
+                                        </div>
+                                    </div>
+                                    <h2 class="font-display fw-bold mb-3">No orders yet</h2>
+                                    <p class="text-muted lead mb-5" style="max-width: 500px; margin: 0 auto;">Your
+                                        journey with Meraki flavors hasn't started yet. Let's fix that!</p>
+                                    <a href="/menu" class="btn btn-primary btn-lg rounded-pill px-5 py-3 shadow-sm">
+                                        <i class="fas fa-utensils me-2"></i> Browse Menu
+                                    </a>
+                                </div>
+                                <% } %>
+            </div>
+        </section>
+
+        <%- include('partials/footer') %>

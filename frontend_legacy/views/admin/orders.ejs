@@ -1,0 +1,99 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar') %>
+
+<div class="container my-5">
+    <h1 class="mb-4"><i class="fas fa-clipboard-list"></i> Order Management</h1>
+    
+    <% if (orders && orders.length > 0) { %>
+        <% orders.forEach(order => { %>
+            <div class="card shadow mb-4">
+                <div class="card-header">
+                    <div class="row align-items-center">
+                        <div class="col-md-3">
+                            <strong>Order #<%= order.id %></strong>
+                        </div>
+                        <div class="col-md-3">
+                            Customer: <%= order.customer_name %>
+                        </div>
+                        <div class="col-md-3">
+                            <%= new Date(order.created_at).toLocaleString() %>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select form-select-sm order-status" 
+                                    data-order-id="<%= order.id %>"
+                                    onchange="updateOrderStatus('<%= order.id %>', this.value)">
+                                <option value="pending" <%= order.status === 'pending' ? 'selected' : '' %>>Pending</option>
+                                <option value="preparing" <%= order.status === 'preparing' ? 'selected' : '' %>>Preparing</option>
+                                <option value="ready" <%= order.status === 'ready' ? 'selected' : '' %>>Ready</option>
+                                <option value="delivered" <%= order.status === 'delivered' ? 'selected' : '' %>>Delivered</option>
+                                <option value="cancelled" <%= order.status === 'cancelled' ? 'selected' : '' %>>Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Order Items:</h6>
+                            <ul class="list-unstyled">
+                                <% order.items.forEach(item => { %>
+                                    <li><%= item.name %> × <%= item.quantity %> - ₹<%= (item.price * item.quantity).toFixed(2) %></li>
+                                <% }); %>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Customer Email:</strong> <%= order.customer_email %></p>
+                            <p><strong>Contact:</strong> <%= order.contact_number %></p>
+                            <p><strong>Delivery Address:</strong><br><%= order.delivery_address %></p>
+                            <p><strong>Payment Method:</strong> <%= order.payment_method.toUpperCase() %></p>
+                            <% if (order.notes) { %>
+                                <p><strong>Notes:</strong> <%= order.notes %></p>
+                            <% } %>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="text-end">
+                        <h4 class="text-primary">Total: ₹<%= parseFloat(order.total_amount).toFixed(2) %></h4>
+                    </div>
+                </div>
+            </div>
+        <% }); %>
+    <% } else { %>
+        <div class="alert alert-info text-center">
+            <i class="fas fa-info-circle"></i> No orders found
+        </div>
+    <% } %>
+</div>
+
+<script>
+async function updateOrderStatus(orderId, status) {
+    try {
+        const response = await api.updateOrderStatus(orderId, status);
+        if (response.success) {
+            showNotification('Order status updated successfully!', 'success');
+        } else {
+            showNotification(response.message || 'Error updating order status', 'danger');
+        }
+    } catch (error) {
+        showNotification('Error updating order status: ' + error.message, 'danger');
+    }
+}
+
+// Notification function
+function showNotification(message, type = 'info') {
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+    alertDiv.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    document.body.appendChild(alertDiv);
+
+    setTimeout(() => {
+        alertDiv.remove();
+    }, 4000);
+}
+</script>
+
+<%- include('../partials/footer') %>
