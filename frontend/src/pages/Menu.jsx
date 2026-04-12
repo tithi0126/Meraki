@@ -72,8 +72,8 @@ export default function Menu() {
                                 key={category}
                                 onClick={() => setActiveTab(category)}
                                 className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${activeTab === category
-                                    ? 'bg-secondary-900 text-white shadow-md'
-                                    : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                                        ? 'bg-secondary-900 text-white shadow-md'
+                                        : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
                                     }`}
                             >
                                 {category}
@@ -98,7 +98,7 @@ export default function Menu() {
                                 {item.image_url && (
                                     <div className="w-full h-48 rounded-xl overflow-hidden mb-4 relative bg-zinc-100">
                                         <img
-                                            src={item.image_url.startsWith('http') ? item.image_url : `${import.meta.env.PROD ? 'https://meraki.aangandevelopers.com' : 'http://localhost:5007'}${item.image_url}`}
+                                            src={item.image_url.startsWith('http') ? item.image_url : `http://localhost:5007${item.image_url}`}
                                             alt={item.name}
                                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                         />
