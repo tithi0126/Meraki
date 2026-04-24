@@ -76,12 +76,37 @@ app.get('/', async (req, res) => {
             fetchFromAPI('/review/featured?limit=3')
         ]);
 
-        const featuredItems = menuData?.featuredItems || [];
+        // Comprehensive list of default coffee items
+        const defaultItems = [
+            { id: 'def1', name: 'Espresso', category: 'HOT COFFEE', price: 2.50, description: 'Rich and bold espresso shot', image_url: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=500&h=500&fit=crop' },
+            { id: 'def2', name: 'Cappuccino', category: 'HOT COFFEE', price: 3.50, description: 'Espresso with steamed milk and foam', image_url: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=500&h=500&fit=crop' },
+            { id: 'def3', name: 'Latte', category: 'HOT COFFEE', price: 4.00, description: 'Smooth espresso with steamed milk', image_url: 'https://images.unsplash.com/photo-1561882468-9110e03e0f78?w=500&h=500&fit=crop' },
+            { id: 'def4', name: 'Iced Americano', category: 'ICED COFFEE', price: 3.00, description: 'Espresso shots over ice with water', image_url: 'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=500&h=500&fit=crop' },
+            { id: 'def5', name: 'Iced Latte', category: 'ICED COFFEE', price: 4.50, description: 'Espresso with cold milk over ice', image_url: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&h=500&fit=crop' },
+            { id: 'def6', name: 'Caramel Macchiato', category: 'HOUSE SPECIALS', price: 5.00, description: 'Espresso with vanilla syrup, steamed milk, and caramel drizzle', image_url: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500&h=500&fit=crop' },
+            { id: 'def7', name: 'Mocha', category: 'HOUSE SPECIALS', price: 4.75, description: 'Espresso with chocolate and steamed milk', image_url: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500&h=500&fit=crop&auto=format&q=80' },
+            { id: 'def8', name: 'Hot Chocolate', category: 'HOT CHOCOLATE', price: 3.50, description: 'Rich and creamy hot chocolate', image_url: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=500&h=500&fit=crop' }
+        ];
+
+        // Help grouping for Menu page fallback
+        const defaultMenuByCategory = {};
+        defaultItems.forEach(item => {
+            if (!defaultMenuByCategory[item.category]) {
+                defaultMenuByCategory[item.category] = [];
+            }
+            defaultMenuByCategory[item.category].push(item);
+        });
+
+        const featuredItems = menuData?.featuredItems && menuData.featuredItems.length > 0 
+            ? menuData.featuredItems 
+            : defaultItems.slice(0, 6); // Just show first 6 on home page
+            
         const reviews = reviewData?.reviews || [];
 
         res.render('index', {
             featuredItems,
-            reviews
+            reviews,
+            isMenuComingSoon: !menuData?.featuredItems || menuData.featuredItems.length === 0
         });
     } catch (error) {
         console.error('Error loading home page:', error);
@@ -138,10 +163,39 @@ app.get('/menu', async (req, res) => {
         const category = req.query.category;
         const endpoint = category ? `/menu?category=${encodeURIComponent(category)}` : '/menu';
         const data = await fetchFromAPI(endpoint);
-        res.render('menu', { menuByCategory: data?.menuByCategory || {} });
+        
+        // Comprehensive list of default coffee items
+        const defaultItems = [
+            { id: 'def1', name: 'Espresso', category: 'HOT COFFEE', price: 2.50, description: 'Rich and bold espresso shot', image_url: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?w=500&h=500&fit=crop' },
+            { id: 'def2', name: 'Cappuccino', category: 'HOT COFFEE', price: 3.50, description: 'Espresso with steamed milk and foam', image_url: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=500&h=500&fit=crop' },
+            { id: 'def3', name: 'Latte', category: 'HOT COFFEE', price: 4.00, description: 'Smooth espresso with steamed milk', image_url: 'https://images.unsplash.com/photo-1561882468-9110e03e0f78?w=500&h=500&fit=crop' },
+            { id: 'def4', name: 'Iced Americano', category: 'ICED COFFEE', price: 3.00, description: 'Espresso shots over ice with water', image_url: 'https://images.unsplash.com/photo-1517487881594-2787fef5ebf7?w=500&h=500&fit=crop' },
+            { id: 'def5', name: 'Iced Latte', category: 'ICED COFFEE', price: 4.50, description: 'Espresso with cold milk over ice', image_url: 'https://images.unsplash.com/photo-1461023058943-07fcbe16d735?w=500&h=500&fit=crop' },
+            { id: 'def6', name: 'Caramel Macchiato', category: 'HOUSE SPECIALS', price: 5.00, description: 'Espresso with vanilla syrup, steamed milk, and caramel drizzle', image_url: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=500&h=500&fit=crop' },
+            { id: 'def7', name: 'Mocha', category: 'HOUSE SPECIALS', price: 4.75, description: 'Espresso with chocolate and steamed milk', image_url: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=500&h=500&fit=crop&auto=format&q=80' },
+            { id: 'def8', name: 'Hot Chocolate', category: 'HOT CHOCOLATE', price: 3.50, description: 'Rich and creamy hot chocolate', image_url: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=500&h=500&fit=crop' }
+        ];
+
+        // Help grouping for Menu page fallback
+        const defaultMenuByCategory = {};
+        defaultItems.forEach(item => {
+            if (!defaultMenuByCategory[item.category]) {
+                defaultMenuByCategory[item.category] = [];
+            }
+            defaultMenuByCategory[item.category].push(item);
+        });
+
+        const menuByCategory = data?.menuByCategory && Object.keys(data.menuByCategory).length > 0 
+            ? data.menuByCategory 
+            : defaultMenuByCategory;
+
+        res.render('menu', { 
+            menuByCategory,
+            isMenuComingSoon: !data?.menuByCategory || Object.keys(data.menuByCategory).length === 0
+        });
     } catch (error) {
         console.error('Error loading menu:', error);
-        res.render('menu', { menuByCategory: {} });
+        res.render('menu', { menuByCategory: {}, isMenuComingSoon: true });
     }
 });
 

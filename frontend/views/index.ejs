@@ -89,8 +89,13 @@
         <section class="section-fade-in py-5">
             <div class="container">
                 <div class="featured-header text-center">
-                    <h2 class="section-title">Curated Selection</h2>
-                    <p class="text-muted">Discover our seasonal favorites</p>
+                    <% if (typeof isMenuComingSoon !== 'undefined' && isMenuComingSoon) { %>
+                        <h2 class="section-title text-warning">Menu Coming Soon</h2>
+                        <p class="text-muted lead">We are currently curating our selection. Please check back later.</p>
+                    <% } else { %>
+                        <h2 class="section-title">Curated Selection</h2>
+                        <p class="text-muted">Discover our seasonal favorites</p>
+                    <% } %>
                 </div>
 
                 <div class="row g-4">
