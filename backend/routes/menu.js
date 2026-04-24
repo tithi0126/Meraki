@@ -5,7 +5,12 @@ const MenuItem = require('../models/MenuItem');
 // Get all menu items
 router.get('/', async (req, res) => {
     try {
-        const menuItems = await MenuItem.find({ is_available: true })
+        const filter = { is_available: true };
+        if (req.query.category) {
+            filter.category = req.query.category;
+        }
+
+        const menuItems = await MenuItem.find(filter)
             .sort({ category: 1, name: 1 })
             .lean();
 

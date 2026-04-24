@@ -23,9 +23,22 @@
           <a class="nav-link <%= typeof path !== 'undefined' && path === '/' ? 'active' : '' %>" href="/" <%=typeof path
             !=='undefined' && path==='/' ? 'aria-current="page"' : '' %>>Home</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link <%= typeof path !== 'undefined' && path === '/menu' ? 'active' : '' %>" href="/menu"
-            <%=typeof path !=='undefined' && path==='/menu' ? 'aria-current="page"' : '' %>>Menu</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle <%= typeof path !== 'undefined' && path.startsWith('/menu') ? 'active' : '' %>" 
+             href="/menu" id="menuDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+             Menu
+          </a>
+          <ul class="dropdown-menu border-0 shadow-sm rounded-3 mt-2" aria-labelledby="menuDropdown">
+            <li><a class="dropdown-item py-2" href="/menu">All Items</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item py-2" href="/menu?category=HOT%20COFFEE">Hot Coffee</a></li>
+            <li><a class="dropdown-item py-2" href="/menu?category=ICED%20COFFEE">Iced Coffee</a></li>
+            <li><a class="dropdown-item py-2" href="/menu?category=HOUSE%20SPECIALS">House Specials</a></li>
+            <li><a class="dropdown-item py-2" href="/menu?category=MANUAL%20BREW">Manual Brew</a></li>
+            <li><a class="dropdown-item py-2" href="/menu?category=SHAKES">Shakes</a></li>
+            <li><a class="dropdown-item py-2" href="/menu?category=HOT%20CHOCOLATE">Hot Chocolate</a></li>
+            <li><a class="dropdown-item py-2" href="/menu?category=TEA">Tea</a></li>
+          </ul>
         </li>
         <li class="nav-item">
           <a class="nav-link <%= typeof path !== 'undefined' && path === '/about' ? 'active' : '' %>" href="/about"

@@ -135,7 +135,9 @@ app.post('/contact', async (req, res) => {
 
 app.get('/menu', async (req, res) => {
     try {
-        const data = await fetchFromAPI('/menu');
+        const category = req.query.category;
+        const endpoint = category ? `/menu?category=${encodeURIComponent(category)}` : '/menu';
+        const data = await fetchFromAPI(endpoint);
         res.render('menu', { menuByCategory: data?.menuByCategory || {} });
     } catch (error) {
         console.error('Error loading menu:', error);
